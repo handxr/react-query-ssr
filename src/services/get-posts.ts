@@ -1,4 +1,4 @@
-import { QueryClientConfig, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export type Post = {
   userId: number;
@@ -13,17 +13,9 @@ export async function getPosts(): Promise<Post[]> {
   return data;
 }
 
-export function useGetPosts({
-  config,
-  initialData,
-}: {
-  config?: QueryClientConfig;
-  initialData?: Post[];
-}) {
+export function useGetPosts() {
   return useQuery({
     queryKey: ["posts"],
     queryFn: getPosts,
-    initialData,
-    ...config,
   });
 }

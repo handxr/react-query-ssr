@@ -1,8 +1,9 @@
 "use client";
-import { Post, useGetPosts } from "@/services/get-posts";
+import { useGetPosts } from "@/services/get-posts";
+import Link from "next/link";
 
-export function PostsList({ posts }: { posts: Post[] }) {
-  const { data, isLoading } = useGetPosts({ initialData: posts });
+export function PostsList() {
+  const { data, isLoading } = useGetPosts();
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -13,15 +14,13 @@ export function PostsList({ posts }: { posts: Post[] }) {
   return (
     <>
       <h1>Posts</h1>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>
-          {data.map((post) => (
-            <li key={post.id}>{post.title}</li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        {data.map((post) => (
+          <li key={post.id}>
+            <Link href={`/post/${post.id}`}>{post.title}</Link>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

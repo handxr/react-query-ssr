@@ -1,17 +1,25 @@
+import { getPost } from "@/services/get-post";
+
 import { getQueryClient } from "@/utils/get-query-client";
 import { Hydrate } from "@/utils/hydrate.client";
 import { dehydrate } from "@tanstack/react-query";
-import { PostsList } from "./posts-list";
-import { getPosts } from "@/services/get-posts";
+import PostDetails from "./post-details";
 
-export default async function Home() {
+export default async function PostPage({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) {
+  const { id } = params;
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(["posts"], getPosts);
+  await queryClient.prefetchQuery(["post", id], () => getPost(id));
   const dehydratedState = dehydrate(queryClient);
 
   return (
     <Hydrate state={dehydratedState}>
-      <PostsList />
+      <PostDetails id={id} />
     </Hydrate>
   );
 }
